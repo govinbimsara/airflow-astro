@@ -9,31 +9,31 @@ def start_number(**context):
     print("Starting number is 10")
 
 def add_five(**context):
-    current_value=context['ti'].xcom_pull(key='current_value',task_id='add_five_task')#start_task
+    current_value=context['ti'].xcom_pull(key='current_value',task_id='start_task')#
     new_value = current_value +5 
     context['ti'].xcom_push(key='current_value',value=new_value)
     print(f'Add 5: {current_value} + 5 = {new_value}')
 
 def multiply_by_two(**context):
-    current_value=context['ti'].xcom_pull(key='current_value',task_id='multiply_by_two_task')
+    current_value=context['ti'].xcom_pull(key='current_value',task_id='add_five_task')
     new_value = current_value * 2
     context['ti'].xcom_push(key='current_value',value=new_value)
     print(f'Multiply by 2: {current_value} * 2 = {new_value}')
 
 def subtract_three(**context):
-    current_value = context['ti'].xcom_pull(key='current_value',task_id='subtract_three_task')
+    current_value = context['ti'].xcom_pull(key='current_value',task_id='multiply_by_two_task')
     new_value = current_value -3 
     context['ti'].xcom_push(key='current_value',value=new_value)
     print(f'Subtract 3: {current_value} - 3 = {new_value}')
 
 def square_number(**context):
-    current_value = context['ti'].xcom_pull(key='current_value',task_id='square_number_task')
+    current_value = context['ti'].xcom_pull(key='current_value',task_id='subtract_three_task')
     new_value = current_value ** 2
-    print(f'Subtract 3: {current_value} ^ 2 = {new_value}')
+    print(f'Square: {current_value} ^ 2 = {new_value}')
 
 with DAG (
     dag_id = 'math_sequence_dag',
-    start_datet = datetime(2024,1,1),
+    start_date = datetime(2024,1,1),
     schedule_interval = '@once',
     catchup = False
 ) as dag:
